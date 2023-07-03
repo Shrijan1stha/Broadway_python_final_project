@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import ttk
 from tkinter import messagebox
+from connection_estd import estd_connection
 
 
 def submit_data():
@@ -15,10 +16,18 @@ def submit_data():
         num_courses = num_courses_spinbox.get()
         num_semesters = num_semesters_spinbox.get()
         registration_status = reg_status_var.get()
-        print(first_name)
+        cursor = estd_connection()
+        sql = f"""
+                INSERT INTO DATA (FIRST_NAME, LAST_NAME, TITLE, AGE, NATIONALITY, NUM_COURSES,
+                NUM_SEMESTER, REGISTRATION_STATUS) VALUES ('{first_name}', '{last_name}', '{title}', '{age}',
+                '{nationality}', '{num_courses}', '{num_semesters}', '{registration_status}')
+            """
+
+        cursor.execute(sql)
+        print("Data added successfully!")
+
     else:
         tkinter.messagebox.showwarning(title="Error", message="You have not accepted the terms and conditions")
-
 
 window = tkinter.Tk()
 window.title("Data Entry Form")
@@ -52,7 +61,7 @@ age_spinbox.grid(row=3, column=0)
 
 
 nationality_label = tkinter.Label(user_info_frame, text="Nationality")
-nationality_combobox = ttk.Combobox(user_info_frame, values=["Nepal", "Singapore", "Japan"])
+nationality_combobox = ttk.Combobox(user_info_frame, values=["Nepali", "Singapore", "Japan"])
 nationality_label.grid(row=2, column=1)
 nationality_combobox.grid(row=3, column=1)
 
